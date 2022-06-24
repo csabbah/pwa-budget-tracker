@@ -15,7 +15,7 @@ request.onsuccess = function (event) {
 
   // Check if app is online, if yes, upload stored budget and push to to API database
   if (navigator.onLine) {
-    // uploadBudget()
+    uploadBudget();
   }
 };
 
@@ -24,7 +24,7 @@ request.onerror = function (event) {
   console.log(event.target.errorCode);
 };
 
-// This will execute if we attempt to submit a new budget and there's no internet connections
+// This will execute if a user attempts to submit a new budget and there's no internet connections
 function saveRecord(record) {
   // Open transaction to database with read and write permissions
   const transaction = db.transaction(['new_budget'], 'readwrite');
@@ -33,3 +33,40 @@ function saveRecord(record) {
   // Add record to object store with add method
   budgetObjectStore.add(record);
 }
+
+// The function below will access the object store and execute a POST method to the server
+function uploadBudget() {
+  const transaction = db.transaction(['new_budget'], 'readwrite');
+  const budgetObjectStore = transaction.objectStore('new_budget');
+  const getAll = budgetObjectStore.getAll();
+
+  getAll.onsuccess = function () {
+    if (getAll.result.length > 0) {
+      fetch('/api/transaction', {
+        method: 'POST',
+        body: JSON.stringify(getAll.result),
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((serverResponse) => {
+          if (serverResponse.message) {
+            throw new Error(serverResponse);
+          }
+          const transaction = db.transaction(['new_budget'], 'readwrite');
+          const budgetObjectStore = transaction.objectStore('new_budget');
+          budgetObjectStore.clear();
+
+          alert('All saved budgets have been submitted!');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+}
+
+//  This will listen for the app coming back online
+window.addEventListener('online', uploadBudget);
