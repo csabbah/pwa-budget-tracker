@@ -23,3 +23,13 @@ request.onsuccess = function (event) {
 request.onerror = function (event) {
   console.log(event.target.errorCode);
 };
+
+// This will execute if we attempt to submit a new budget and there's no internet connections
+function saveRecord(record) {
+  // Open transaction to database with read and write permissions
+  const transaction = db.transaction(['new_budget'], 'readwrite');
+  // Access the object store data
+  const budgetObjectStore = transaction.objectStore('new_budget');
+  // Add record to object store with add method
+  budgetObjectStore.add(record);
+}
