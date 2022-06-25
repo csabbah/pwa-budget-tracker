@@ -56,8 +56,9 @@ From there, you are ready to use the application!
 - Heroku
 - HTML
 - CSS
-- Bootstrap
 - JavaScript
+- Bootstrap
+- Font-awesome
 
 ## Questions
 
