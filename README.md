@@ -15,7 +15,7 @@
 
 ## Description
 
-This is a full-stack...
+This progressive web application (PWA) gives users a fast and easy way to track their finances while also plotting the data on a chart. With the combination of indexedDB, Service Worker, and a Manifest, pwa-budget-tracker allows users to deposit and withdraw their expenses on the go with or without data/internet connection.
 
 ## Installation
 
