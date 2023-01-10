@@ -43,7 +43,7 @@ From there, you are ready to use the application!
 
 ## Links
 
-[Link to live application](https://fullpwa-budget-tracker.herokuapp.com/)
+[Link to live application](https://cspwa-budget-tracker.herokuapp.com/)
 
 ## Built With
 
